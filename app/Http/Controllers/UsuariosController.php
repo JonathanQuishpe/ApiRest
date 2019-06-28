@@ -43,4 +43,13 @@ class UsuariosController extends Controller{
         $user = Usuarios::find($id);
         echo json_encode($user);
     }
+
+    public function login(Request $request){
+        $user = Usuarios::select('user')
+                        ->where('email',$request->input('email'))
+                        ->where('pass',$request->input('password'))
+                        ->get();
+        echo json_encode($user);
+
+    }
 }
