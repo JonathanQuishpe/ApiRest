@@ -17,7 +17,7 @@ class UsuariosController extends Controller{
         $user->lastnames = $request->input('lastnames');
         $user->email = $request->input('email');
         $user->user = $request->input('user');
-        $user->pass = $request->input('pass');
+        $user->pass = $request->input('password');
         $user->save();
         echo json_encode($user);
 
