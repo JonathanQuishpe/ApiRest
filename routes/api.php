@@ -20,3 +20,4 @@ Route::resource('user', 'UsuariosController');
 Route::resource('category', 'CategoriaController');
 Route::resource('proveedor', 'ProveedorController');
 Route::post('login', 'UsuariosController@login');
+Route::get('proveedor-contrato/{id}', 'ProveedorController@proveedorContrato');
