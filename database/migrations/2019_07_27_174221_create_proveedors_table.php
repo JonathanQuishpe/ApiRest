@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateProveedorsTable extends Migration
 {
@@ -21,6 +21,7 @@ class CreateProveedorsTable extends Migration
             $table->string('celular');
             $table->string('descripcion');
             $table->integer('id_categoria');
+            $table->double('calificacion', 10, 2)->default(0);
             $table->timestamps();
         });
     }

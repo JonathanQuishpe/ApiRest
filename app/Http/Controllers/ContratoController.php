@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Models\Contrato;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ContratoController extends Controller
 {
@@ -21,6 +22,29 @@ class ContratoController extends Controller
         $contrato->estado = $request->input('estado');
         $contrato->save();
         echo json_encode($contrato);
+    }
+
+    public function lista($id)
+    {
+        $listado = Contrato::select("categorias.nombre AS nombre_categoria",
+            DB::raw('CONCAT(proveedors.nombres, " ", proveedors.apellidos) AS nombre_proveedor'),
+            "proveedors.id AS id_proveedor", "contratos.id AS id_contrato", "contratos.estado",
+            "contratos.fecha", "contratos.calificacion")
+            ->join('proveedors', 'proveedors.id', '=', 'contratos.id_proveedor')
+            ->join('categorias', 'categorias.id', '=', 'contratos.id_categoria')
+            ->where('contratos.id_usuario', $id)
+            ->get();
+
+        echo json_encode($listado);
+    }
+
+    public function calificar($id, $valor)
+    {
+        $contrato = Contrato::find($id);
+        $contrato->calificacion = $valor;
+        $contrato->save();
+        echo json_encode($contrato);
+
     }
 
 }

@@ -22,3 +22,5 @@ Route::resource('proveedor', 'ProveedorController');
 Route::post('login', 'UsuariosController@login');
 Route::post('contrato', 'ContratoController@guardar');
 Route::get('proveedor-contrato/{id}', 'ProveedorController@proveedorContrato');
+Route::get('listado-contrato/{id}', 'ContratoController@lista');
+Route::get('calificar/{id}/{valor}', 'ContratoController@calificar');

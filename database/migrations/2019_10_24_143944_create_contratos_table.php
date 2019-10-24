@@ -23,6 +23,7 @@ class CreateContratosTable extends Migration
             $table->integer('id_usuario');
             $table->date('fecha');
             $table->string('estado');
+            $table->integer('calificacion')->nullable();
             $table->string('visible', 2)->default('SI');
             $table->timestamps();
         });
