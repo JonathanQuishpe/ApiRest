@@ -2,16 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Http\Models\Usuarios;
+use Illuminate\Http\Request;
 
-class UsuariosController extends Controller{
-    public function index(){
+class UsuariosController extends Controller
+{
+    public function index()
+    {
         $user = Usuarios::get();
-        echo (json_encode($user)); 
+        echo (json_encode($user));
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         $user = new Usuarios();
         $user->names = $request->input('names');
         $user->lastnames = $request->input('lastnames');
@@ -23,7 +26,8 @@ class UsuariosController extends Controller{
 
     }
 
-    public function update(Request $request, $id){
+    public function update(Request $request, $id)
+    {
         $user = Usuarios::find($id);
         $user->names = $request->input('names');
         $user->lastnames = $request->input('lastnames');
@@ -34,21 +38,24 @@ class UsuariosController extends Controller{
         echo json_encode($user);
     }
 
-    public function destroy($id){
+    public function destroy($id)
+    {
         $movie = Usuarios::find($id);
         $movie->delete();
     }
 
-    public function show($id){
+    public function show($id)
+    {
         $user = Usuarios::find($id);
         echo json_encode($user);
     }
 
-    public function login(Request $request){
-        $user = Usuarios::select('user')
-                        ->where('email',$request->input('email'))
-                        ->where('pass',$request->input('password'))
-                        ->get();
+    public function login(Request $request)
+    {
+        $user = Usuarios::select('user', 'id')
+            ->where('email', $request->input('email'))
+            ->where('pass', $request->input('password'))
+            ->get();
         echo json_encode($user);
 
     }
