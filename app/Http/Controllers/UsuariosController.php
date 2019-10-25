@@ -52,7 +52,7 @@ class UsuariosController extends Controller
 
     public function login(Request $request)
     {
-        $user = Usuarios::select('user', 'id')
+        $user = Usuarios::select('user', 'id', 'id_rol', 'id_proveedor')
             ->where('email', $request->input('email'))
             ->where('pass', $request->input('password'))
             ->get();

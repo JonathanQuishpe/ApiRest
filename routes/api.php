@@ -24,3 +24,6 @@ Route::post('contrato', 'ContratoController@guardar');
 Route::get('proveedor-contrato/{id}', 'ProveedorController@proveedorContrato');
 Route::get('listado-contrato/{id}', 'ContratoController@lista');
 Route::get('calificar/{id}/{valor}', 'ContratoController@calificar');
+Route::get('proveedor-estado/{id}', 'ContratoController@proveedor');
+Route::get('cambiar-estado/{id}/{estado}', 'ContratoController@cambiarEstado');
+Route::get('prueba/{id}', 'ContratoController@calcular');

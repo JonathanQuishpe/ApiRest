@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateUsuariosTable extends Migration
 {
@@ -20,6 +20,8 @@ class CreateUsuariosTable extends Migration
             $table->string('email');
             $table->string('user');
             $table->string('pass');
+            $table->integer('id_rol')->default(1);
+            $table->integer('id_proveedor')->default(0);
             $table->timestamps();
         });
     }

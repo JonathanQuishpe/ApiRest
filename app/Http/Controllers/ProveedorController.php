@@ -11,7 +11,7 @@ class ProveedorController extends Controller
     public function proveedorContrato($id)
     {
         $proveedores = Proveedor::select('proveedors.nombres AS pnombre', 'proveedors.apellidos AS papellido',
-            'proveedors.id AS id' )
+            'proveedors.id AS id')
             ->join('categorias', 'categorias.id', '=', 'proveedors.id_categoria')
             ->where('proveedors.id_categoria', $id)
             ->get();
@@ -31,7 +31,7 @@ class ProveedorController extends Controller
     public function show($id)
     {
         $proveedores = Proveedor::select('proveedors.nombres AS pnombre', 'proveedors.apellidos AS papellido',
-            'proveedors.descripcion', 'categorias.nombre', 'proveedors.celular')
+            'proveedors.descripcion', 'categorias.nombre', 'proveedors.celular', 'proveedors.calificacion','proveedors.id')
             ->join('categorias', 'categorias.id', '=', 'proveedors.id_categoria')
             ->where('proveedors.id_categoria', $id)
             ->get();
