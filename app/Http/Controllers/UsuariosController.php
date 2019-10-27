@@ -13,6 +13,11 @@ class UsuariosController extends Controller
         echo (json_encode($user));
     }
 
+    public function datos($id)
+    {
+        $usuario = Usuarios::find($id);
+        echo json_encode($usuario);
+    }
     public function store(Request $request)
     {
         $user = new Usuarios();
@@ -26,14 +31,14 @@ class UsuariosController extends Controller
 
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        $user = Usuarios::find($id);
+        $user = Usuarios::find($request->id);
         $user->names = $request->input('names');
         $user->lastnames = $request->input('lastnames');
         $user->email = $request->input('email');
         $user->user = $request->input('user');
-        $user->pass = $request->input('pass');
+        $user->pass = $request->input('password');
         $user->save();
         echo json_encode($user);
     }
