@@ -28,4 +28,6 @@ Route::get('proveedor-estado/{id}', 'ContratoController@proveedor');
 Route::get('cambiar-estado/{id}/{estado}', 'ContratoController@cambiarEstado');
 Route::get('prueba/{id}', 'ContratoController@calcular');
 Route::get('datos/{id}', 'UsuariosController@datos');
+Route::get('datos-proveedor/{id}', 'ProveedorController@datos');
 Route::post('userUpdate', 'UsuariosController@update');
+Route::post('proveedorUpdate', 'ProveedorController@actualizar');

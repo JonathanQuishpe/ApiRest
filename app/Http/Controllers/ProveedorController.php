@@ -15,12 +15,13 @@ class ProveedorController extends Controller
             ->join('categorias', 'categorias.id', '=', 'proveedors.id_categoria')
             ->where('proveedors.id_categoria', $id)
             ->get();
-        echo (json_encode($proveedores));
+        echo json_encode($proveedores);
     }
 
-    public function create()
+    public function datos($id)
     {
-        //
+        $proveedor = Proveedor::find($id);
+        echo json_encode($proveedor);
     }
 
     public function store(Request $request)
@@ -31,7 +32,7 @@ class ProveedorController extends Controller
     public function show($id)
     {
         $proveedores = Proveedor::select('proveedors.nombres AS pnombre', 'proveedors.apellidos AS papellido',
-            'proveedors.descripcion', 'categorias.nombre', 'proveedors.celular', 'proveedors.calificacion','proveedors.id')
+            'proveedors.descripcion', 'categorias.nombre', 'proveedors.celular', 'proveedors.calificacion', 'proveedors.id')
             ->join('categorias', 'categorias.id', '=', 'proveedors.id_categoria')
             ->where('proveedors.id_categoria', $id)
             ->get();
@@ -43,24 +44,17 @@ class ProveedorController extends Controller
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Proveedor  $proveedor
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Proveedor $proveedor)
+    public function actualizar(Request $request)
     {
-        //
+        $proveedor = Proveedor::find($request->id);
+        $proveedor->nombres = $request->input('nombres');
+        $proveedor->apellidos = $request->input('apellidos');
+        $proveedor->direccion = $request->input('direccion');
+        $proveedor->celular = $request->input('celular');
+        $proveedor->descripcion = $request->input('descripcion');
+        $proveedor->save();
+        echo json_encode($proveedor);
     }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Proveedor  $proveedor
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Proveedor $proveedor)
     {
         //
