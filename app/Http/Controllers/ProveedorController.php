@@ -24,9 +24,10 @@ class ProveedorController extends Controller
         echo json_encode($proveedor);
     }
 
-    public function store(Request $request)
+    public function lista()
     {
-        //
+        $proveedores = Proveedor::all();
+        return json_encode($proveedores);
     }
 
     public function show($id)
@@ -39,9 +40,18 @@ class ProveedorController extends Controller
         echo (json_encode($proveedores));
     }
 
-    public function edit(Proveedor $proveedor)
+    public function guardar(Request $request)
     {
-        //
+        $proveedor = new Proveedor();
+        $proveedor->nombres = $request->input('nombres');
+        $proveedor->apellidos = $request->input('apellidos');
+        $proveedor->direccion = $request->input('direccion');
+        $proveedor->celular = $request->input('celular');
+        $proveedor->descripcion = $request->input('descripcion');
+        $proveedor->id_categoria = $request->input('id_categoria');
+        $proveedor->save();
+
+        echo json_encode($proveedor);
     }
 
     public function actualizar(Request $request)
