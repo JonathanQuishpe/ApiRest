@@ -22,6 +22,7 @@ class CreateProveedorsTable extends Migration
             $table->string('descripcion');
             $table->integer('id_categoria');
             $table->double('calificacion', 10, 2)->default(0);
+            $table->string('estado')->default('activo');
             $table->timestamps();
         });
     }

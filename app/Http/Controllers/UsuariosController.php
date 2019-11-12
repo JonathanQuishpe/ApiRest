@@ -64,4 +64,24 @@ class UsuariosController extends Controller
         echo json_encode($user);
 
     }
+
+    public function cuenta()
+    {
+        $user = Usuarios::all();
+        echo json_encode($user);
+    }
+    public function cuentaLibres()
+    {
+        $user = Usuarios::where('id_proveedor', '=', 0)
+            ->get();
+        echo json_encode($user);
+    }
+    public function asignar($id, $pro)
+    {
+        $user = Usuarios::find($id);
+        $user->id_rol = 2;
+        $user->id_proveedor = $pro;
+        $user->save();
+        echo json_encode($user);
+    }
 }

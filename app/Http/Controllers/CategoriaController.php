@@ -9,73 +9,27 @@ class CategoriaController extends Controller
 {
     public function index()
     {
-        $categoria = Categoria::get();
-        echo (json_encode($categoria)); 
+        $categoria = Categoria::where('estado', '=', 'activo')
+            ->get();
+        echo (json_encode($categoria));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function guardar(Request $resquest)
     {
-        //
+        $categoria = new Categoria();
+        $categoria->nombre = $resquest->input('nombre');
+        $categoria->descripcion = $resquest->input('descripcion');
+        $categoria->estado = 'activo';
+        $categoria->save();
+        echo json_encode($categoria);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function borrar($id)
     {
-        //
-    }
+        $categoria = Categoria::find($id);
+        $categoria->estado = 'inactivo';
+        $categoria->save();
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Categoria  $categoria
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Categoria $categoria)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Categoria  $categoria
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Categoria $categoria)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Categoria  $categoria
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Categoria $categoria)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Categoria  $categoria
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Categoria $categoria)
-    {
-        //
+        echo json_encode($categoria);
     }
 }

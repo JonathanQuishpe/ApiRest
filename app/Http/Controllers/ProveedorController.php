@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Proveedor;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProveedorController extends Controller
 {
@@ -13,7 +14,8 @@ class ProveedorController extends Controller
         $proveedores = Proveedor::select('proveedors.nombres AS pnombre', 'proveedors.apellidos AS papellido',
             'proveedors.id AS id')
             ->join('categorias', 'categorias.id', '=', 'proveedors.id_categoria')
-            ->where('proveedors.id_categoria', $id)
+            ->where('proveedors.id_categoria', '=', $id)
+            ->where('proveedors.estado', '=', 'activo')
             ->get();
         echo json_encode($proveedores);
     }
@@ -35,7 +37,8 @@ class ProveedorController extends Controller
         $proveedores = Proveedor::select('proveedors.nombres AS pnombre', 'proveedors.apellidos AS papellido',
             'proveedors.descripcion', 'categorias.nombre', 'proveedors.celular', 'proveedors.calificacion', 'proveedors.id')
             ->join('categorias', 'categorias.id', '=', 'proveedors.id_categoria')
-            ->where('proveedors.id_categoria', $id)
+            ->where('proveedors.id_categoria', '=', $id)
+            ->where('proveedors.estado', '=', 'activo')
             ->get();
         echo (json_encode($proveedores));
     }
@@ -65,8 +68,28 @@ class ProveedorController extends Controller
         $proveedor->save();
         echo json_encode($proveedor);
     }
-    public function destroy(Proveedor $proveedor)
+    public function borrar($id)
     {
-        //
+        $proveedor = Proveedor::find($id);
+        $proveedor->estado = 'inactivo';
+        $proveedor->save();
+        echo json_encode($proveedor);
+    }
+    public function activar($id)
+    {
+        $proveedor = Proveedor::find($id);
+        $proveedor->estado = 'activo';
+        $proveedor->save();
+        echo json_encode($proveedor);
+    }
+
+    public function proveedorDisponible()
+    {
+        $proveedor = DB::select('SELECT * FROM
+        proveedors
+        WHERE id NOT IN (SELECT id_proveedor FROM usuarios
+        WHERE id_proveedor > 0)');
+        echo json_encode($proveedor);
+
     }
 }
