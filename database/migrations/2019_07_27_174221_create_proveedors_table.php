@@ -20,6 +20,7 @@ class CreateProveedorsTable extends Migration
             $table->string('direccion');
             $table->string('celular');
             $table->string('descripcion');
+            $table->string('imagen');
             $table->integer('id_categoria');
             $table->double('calificacion', 10, 2)->default(0);
             $table->string('estado')->default('activo');

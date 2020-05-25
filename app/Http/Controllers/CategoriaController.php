@@ -11,7 +11,7 @@ class CategoriaController extends Controller
     {
         $categoria = Categoria::where('estado', '=', 'activo')
             ->get();
-        echo (json_encode($categoria));
+        return json_encode($categoria);
     }
 
     public function guardar(Request $resquest)
@@ -21,7 +21,15 @@ class CategoriaController extends Controller
         $categoria->descripcion = $resquest->input('descripcion');
         $categoria->estado = 'activo';
         $categoria->save();
-        echo json_encode($categoria);
+        return json_encode($categoria);
+    }
+    public function actualizar(Request $resquest)
+    {
+        $categoria = Categoria::find($resquest->input('id'));
+        $categoria->nombre = $resquest->input('nombre');
+        $categoria->descripcion = $resquest->input('descripcion');
+        $categoria->save();
+        return json_encode($categoria);
     }
 
     public function borrar($id)
@@ -30,6 +38,14 @@ class CategoriaController extends Controller
         $categoria->estado = 'inactivo';
         $categoria->save();
 
-        echo json_encode($categoria);
+        return json_encode($categoria);
+    }
+
+    public function busqueda($string)
+    {
+        $categoria = Categoria::where('nombre', 'like', $string . '%')
+            ->where('estado', 'activo')
+            ->get();
+        return json_encode($categoria);
     }
 }

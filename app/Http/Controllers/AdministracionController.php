@@ -12,6 +12,6 @@ class AdministracionController extends Controller
         $user = Administracion::where('usuario', $request->input('usuario'))
             ->where('pass', $request->input('pass'))
             ->get();
-        echo json_encode($user);
+        return json_encode($user);
     }
 }

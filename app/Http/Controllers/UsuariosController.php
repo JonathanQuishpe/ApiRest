@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Models\ProveedorXCategoria;
 use App\Http\Models\Usuarios;
 use Illuminate\Http\Request;
 
@@ -16,31 +17,47 @@ class UsuariosController extends Controller
     public function datos($id)
     {
         $usuario = Usuarios::find($id);
-        echo json_encode($usuario);
+        return json_encode($usuario);
     }
     public function store(Request $request)
     {
-        $user = new Usuarios();
-        $user->names = $request->input('names');
-        $user->lastnames = $request->input('lastnames');
-        $user->email = $request->input('email');
-        $user->user = $request->input('user');
-        $user->pass = $request->input('password');
-        $user->save();
-        echo json_encode($user);
+        $correo = Usuarios::where('email', $request->input('email'))
+            ->get();
+        if (count($correo) > 0) {
+            return json_encode('fail');
+        } else {
+            $user = new Usuarios();
+            $user->names = $request->input('names');
+            $user->lastnames = $request->input('lastnames');
+            $user->email = $request->input('email');
+            $user->user = $request->input('user');
+            $user->pass = $request->input('password');
+            $user->save();
+            return json_encode($user);
+        }
 
     }
 
     public function update(Request $request)
     {
-        $user = Usuarios::find($request->id);
+        /*$image = $request->file('imagen');
+        $path = time() . '.' . $image->getClientOriginalExtension();
+        $image->move(public_path('perfil'), $path);*/
+        $user = Usuarios::find($request->input('id'));
+
+        /*$old = public_path() . '/perfil/' . $user->imagen;
+        if (file_exists($old)) {
+        unlink($old);
+        }*/
+
         $user->names = $request->input('names');
         $user->lastnames = $request->input('lastnames');
-        $user->email = $request->input('email');
+        //$user->email = $request->input('email');
         $user->user = $request->input('user');
         $user->pass = $request->input('password');
+        //$user->imagen = $path;
         $user->save();
-        echo json_encode($user);
+        return json_encode($user);
     }
 
     public function destroy($id)
@@ -52,7 +69,7 @@ class UsuariosController extends Controller
     public function show($id)
     {
         $user = Usuarios::find($id);
-        echo json_encode($user);
+        return json_encode($user);
     }
 
     public function login(Request $request)
@@ -61,27 +78,81 @@ class UsuariosController extends Controller
             ->where('email', $request->input('email'))
             ->where('pass', $request->input('password'))
             ->get();
-        echo json_encode($user);
+        return json_encode($user);
 
     }
 
     public function cuenta()
     {
         $user = Usuarios::all();
-        echo json_encode($user);
+        return json_encode($user);
     }
     public function cuentaLibres()
     {
         $user = Usuarios::where('id_proveedor', '=', 0)
             ->get();
-        echo json_encode($user);
+        return json_encode($user);
     }
     public function asignar($id, $pro)
     {
-        $user = Usuarios::find($id);
-        $user->id_rol = 2;
-        $user->id_proveedor = $pro;
+        $categoria = new ProveedorXCategoria();
+        $categoria->id_proveedor = $pro;
+        $categoria->id_categoria = $id;
+        $categoria->alias = 'S/N';
+        $categoria->descripcion = 'S/N';
+        $categoria->celular = 'S/N';
+        $categoria->hora_min = '00:00';
+        $categoria->hora_max = '00:00';
+        $categoria->precio = '0$-0$';
+        $categoria->banco = 'S/N';
+        $categoria->cuenta = 'S/N';
+        $categoria->save();
+        return json_encode($categoria);
+        /*$user = Usuarios::find($id);
+    $user->id_rol = 2;
+    $user->id_proveedor = $pro;
+    $user->save();
+    echo json_encode($user);*/
+    }
+
+    public function foto(Request $request)
+    {
+        $image = $request->file('imagen');
+        $path = time() . '.' . $image->getClientOriginalExtension();
+        $image->move(public_path('perfil'), $path);
+        $user = Usuarios::find($request->input('id'));
+
+        $old = public_path() . '/perfil/' . $user->imagen;
+        if (file_exists($old)) {
+            unlink($old);
+        }
+
+        $user->imagen = $path;
         $user->save();
-        echo json_encode($user);
+        $response = '';
+        if ($user) {
+            $response = 'ok';
+        } else {
+            $response = 'error';
+        }
+
+        return json_encode($response);
+    }
+
+    public function guardar_token(Request $request)
+    {
+        $user = Usuarios::find($request->input('id'));
+        $user->token_movil = $request->input('token');
+        $user->save();
+
+        return json_encode($user);
+    }
+    public function guardar_token_web(Request $request)
+    {
+        $user = Usuarios::find($request->input('id'));
+        $user->token_web = $request->input('token');
+        $user->save();
+
+        return json_encode($user);
     }
 }
