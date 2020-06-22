@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Models\ProveedorXCategoria;
 use App\Http\Models\Usuarios;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class UsuariosController extends Controller
 {
@@ -154,5 +155,38 @@ class UsuariosController extends Controller
         $user->save();
 
         return json_encode($user);
+    }
+
+    public function reestablecer(Request $request)
+    {
+        $correo = $request->input('email');
+        $usuario = Usuarios::where('email', $correo)
+            ->first();
+        $response = array();
+        if ($usuario) {
+            //enviar correo
+            $this->email($usuario);
+            $response = array(
+                'status' => 'success',
+                'message' => 'La contraseña ha sido enviada al correo ingresado.',
+            );
+        } else {
+            $response = array(
+                'status' => 'error',
+                'message' => 'El correo ingresado no se encuentra registrado en el sistema.',
+            );
+        }
+
+        return json_encode($response);
+    }
+
+    public function email($usuario)
+    {
+        $correos = [$usuario->email];
+        $datos['user'] = $usuario;
+        Mail::send('email.reset', $datos, function ($message) use ($correos) {
+            $message->from('info@qckservice.com', 'Notificación QuickService');
+            $message->to($correos)->subject('Notificación QuickService - Recordatorio de Contraseña');
+        });
     }
 }

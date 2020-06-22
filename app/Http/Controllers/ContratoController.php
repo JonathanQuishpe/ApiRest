@@ -45,7 +45,7 @@ class ContratoController extends Controller
         $listado = Contrato::select("categorias.nombre AS nombre_categoria", DB::raw('CONCAT(proveedors.nombres, " ", proveedors.apellidos) AS nombre_proveedor'), "proveedors.id AS id_proveedor", "contratos.id AS id_contrato", "contratos.estado", "contratos.fecha", "contratos.calificacion", "contratos.referencia", "contratos.direccion", "contratos.descripcion", "proveedors.celular", "proveedors.convencional", "contratos.hora", "contratos.nombre", 'usuarios.imagen', 'contratos.comentarios')
             ->join('proveedors', 'proveedors.id', '=', 'contratos.id_proveedor')
             ->join('categorias', 'categorias.id', '=', 'contratos.id_categoria')
-            ->join('usuarios', 'usuarios.id', '=', 'proveedors.id')
+            ->join('usuarios', 'usuarios.id_proveedor', '=', 'proveedors.id')
             ->where('contratos.id_usuario', $id)
             ->get();
 
